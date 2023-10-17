@@ -2,7 +2,7 @@ group 'com.cacianokroth.sf_marketing_cloud_flutter'
 version '1.0-SNAPSHOT'
 
 buildscript {
-    ext.kotlin_version = '1.7.10'
+    ext.kotlin_version = '1.7.20'
     ext.marketingcloudsdk_version = '8.0.9'
 
     repositories {
@@ -11,7 +11,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.3.0'
+        classpath 'com.android.tools.build:gradle:7.1.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -20,7 +20,6 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        maven { url "https://salesforce-marketingcloud.github.io/MarketingCloudSDK-Android/repository" }
     }
 }
 
@@ -45,33 +44,15 @@ android {
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
-        test.java.srcDirs += 'src/test/kotlin'
     }
 
     defaultConfig {
-        minSdkVersion 19
+        minSdkVersion 23
     }
 
     dependencies {
-        testImplementation 'org.jetbrains.kotlin:kotlin-test'
-        testImplementation 'org.mockito:mockito-core:5.0.0'
+        implementation ("com.salesforce.marketingcloud:marketingcloudsdk:$marketingcloudsdk_version")
+        implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+        implementation 'com.google.firebase:firebase-messaging:20.1.2'
     }
-
-    testOptions {
-        unitTests.all {
-            useJUnitPlatform()
-
-            testLogging {
-                events "passed", "skipped", "failed", "standardOut", "standardError"
-                outputs.upToDateWhen { false }
-                showStandardStreams = true
-            }
-        }
-    }
-}
-
-dependencies {
-    implementation("com.salesforce.marketingcloud:marketingcloudsdk:$marketingcloudsdk_version")
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.google.firebase:firebase-messaging:20.1.2'
 }

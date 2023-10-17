@@ -27,16 +27,16 @@ class _MyAppState extends State<MyApp> {
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
     _sfMarketingCloudFlutterPlugin.enableVerboseLogging();
-    // _sfMarketingCloudFlutterPlugin.initialize(
-    //   SfMarketingCloudConfig(
-    //     appId: 'df86f5e7-8429-4440-aec6-433528ff4cd5',
-    //     accessToken: 'anUXpGCK7XS1c7stu3MDgFtj',
-    //     appEndpoint:
-    //         'https://mcztx763gcky9vn2thhbc1h1p16m.device.marketingcloudapis.com/',
-    //     mid: '514004931',
-    //     senderId: '797050328040',
-    //   ),
-    // );
+    _sfMarketingCloudFlutterPlugin.initialize(
+      SfMarketingCloudConfig(
+        appId: 'df86f5e7-8429-4440-aec6-433528ff4cd5',
+        accessToken: 'anUXpGCK7XS1c7stu3MDgFtj',
+        appEndpoint:
+            'https://mcztx763gcky9vn2thhbc1h1p16m.device.marketingcloudapis.com/',
+        mid: '514004931',
+        senderId: '797050328040',
+      ),
+    );
   }
 
   @override

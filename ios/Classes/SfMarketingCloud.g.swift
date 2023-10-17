@@ -71,10 +71,102 @@ struct SfMarketingCloudConfig {
     ]
   }
 }
+
+/// Generated class from Pigeon that represents data sent in messages.
+struct SFMCUserAttribute {
+  var key: String
+  var value: String
+
+  static func fromList(_ list: [Any?]) -> SFMCUserAttribute? {
+    let key = list[0] as! String
+    let value = list[1] as! String
+
+    return SFMCUserAttribute(
+      key: key,
+      value: value
+    )
+  }
+  func toList() -> [Any?] {
+    return [
+      key,
+      value,
+    ]
+  }
+}
+
+/// Generated class from Pigeon that represents data sent in messages.
+struct SFMCEvent {
+  var name: String
+  var params: [String?: Any?]? = nil
+
+  static func fromList(_ list: [Any?]) -> SFMCEvent? {
+    let name = list[0] as! String
+    let params: [String?: Any?]? = nilOrValue(list[1])
+
+    return SFMCEvent(
+      name: name,
+      params: params
+    )
+  }
+  func toList() -> [Any?] {
+    return [
+      name,
+      params,
+    ]
+  }
+}
+
+/// Generated class from Pigeon that represents data sent in messages.
+struct SFMCConversionData {
+  var id: String
+  var order: String
+  var item: String
+  var quantity: Int64
+  var value: Double
+  var shipping: Double
+  var discount: Double
+
+  static func fromList(_ list: [Any?]) -> SFMCConversionData? {
+    let id = list[0] as! String
+    let order = list[1] as! String
+    let item = list[2] as! String
+    let quantity = list[3] is Int64 ? list[3] as! Int64 : Int64(list[3] as! Int32)
+    let value = list[4] as! Double
+    let shipping = list[5] as! Double
+    let discount = list[6] as! Double
+
+    return SFMCConversionData(
+      id: id,
+      order: order,
+      item: item,
+      quantity: quantity,
+      value: value,
+      shipping: shipping,
+      discount: discount
+    )
+  }
+  func toList() -> [Any?] {
+    return [
+      id,
+      order,
+      item,
+      quantity,
+      value,
+      shipping,
+      discount,
+    ]
+  }
+}
 private class SfMarketingCloudHostApiCodecReader: FlutterStandardReader {
   override func readValue(ofType type: UInt8) -> Any? {
     switch type {
       case 128:
+        return SFMCConversionData.fromList(self.readValue() as! [Any?])
+      case 129:
+        return SFMCEvent.fromList(self.readValue() as! [Any?])
+      case 130:
+        return SFMCUserAttribute.fromList(self.readValue() as! [Any?])
+      case 131:
         return SfMarketingCloudConfig.fromList(self.readValue() as! [Any?])
       default:
         return super.readValue(ofType: type)
@@ -84,8 +176,17 @@ private class SfMarketingCloudHostApiCodecReader: FlutterStandardReader {
 
 private class SfMarketingCloudHostApiCodecWriter: FlutterStandardWriter {
   override func writeValue(_ value: Any) {
-    if let value = value as? SfMarketingCloudConfig {
+    if let value = value as? SFMCConversionData {
       super.writeByte(128)
+      super.writeValue(value.toList())
+    } else if let value = value as? SFMCEvent {
+      super.writeByte(129)
+      super.writeValue(value.toList())
+    } else if let value = value as? SFMCUserAttribute {
+      super.writeByte(130)
+      super.writeValue(value.toList())
+    } else if let value = value as? SfMarketingCloudConfig {
+      super.writeByte(131)
       super.writeValue(value.toList())
     } else {
       super.writeValue(value)
@@ -112,8 +213,16 @@ protocol SfMarketingCloudHostApi {
   func initialize(config: SfMarketingCloudConfig) throws
   func setPushToken(token: String) throws
   func setContactKey(contactKey: String) throws
+  func trackEvent(event: SFMCEvent) throws
+  func setAttribute(attribute: SFMCUserAttribute) throws
+  func clearAttributes(attributeKeys: [String]) throws
+  func setAttributes(attributes: [SFMCUserAttribute]) throws
+  func addTags(tags: [String]) throws
+  func removeTags(tags: [String]) throws
   func enableVerboseLogging() throws
   func disableVerboseLogging() throws
+  func trackConversion(data: SFMCConversionData) throws
+  func trackPageView(path: String) throws
 }
 
 /// Generated setup class from Pigeon to handle messages through the `binaryMessenger`.
@@ -167,6 +276,96 @@ class SfMarketingCloudHostApiSetup {
     } else {
       setContactKeyChannel.setMessageHandler(nil)
     }
+    let trackEventChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.sf_marketing_cloud_flutter.SfMarketingCloudHostApi.trackEvent", binaryMessenger: binaryMessenger, codec: codec)
+    if let api = api {
+      trackEventChannel.setMessageHandler { message, reply in
+        let args = message as! [Any?]
+        let eventArg = args[0] as! SFMCEvent
+        do {
+          try api.trackEvent(event: eventArg)
+          reply(wrapResult(nil))
+        } catch {
+          reply(wrapError(error))
+        }
+      }
+    } else {
+      trackEventChannel.setMessageHandler(nil)
+    }
+    let setAttributeChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.sf_marketing_cloud_flutter.SfMarketingCloudHostApi.setAttribute", binaryMessenger: binaryMessenger, codec: codec)
+    if let api = api {
+      setAttributeChannel.setMessageHandler { message, reply in
+        let args = message as! [Any?]
+        let attributeArg = args[0] as! SFMCUserAttribute
+        do {
+          try api.setAttribute(attribute: attributeArg)
+          reply(wrapResult(nil))
+        } catch {
+          reply(wrapError(error))
+        }
+      }
+    } else {
+      setAttributeChannel.setMessageHandler(nil)
+    }
+    let clearAttributesChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.sf_marketing_cloud_flutter.SfMarketingCloudHostApi.clearAttributes", binaryMessenger: binaryMessenger, codec: codec)
+    if let api = api {
+      clearAttributesChannel.setMessageHandler { message, reply in
+        let args = message as! [Any?]
+        let attributeKeysArg = args[0] as! [String]
+        do {
+          try api.clearAttributes(attributeKeys: attributeKeysArg)
+          reply(wrapResult(nil))
+        } catch {
+          reply(wrapError(error))
+        }
+      }
+    } else {
+      clearAttributesChannel.setMessageHandler(nil)
+    }
+    let setAttributesChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.sf_marketing_cloud_flutter.SfMarketingCloudHostApi.setAttributes", binaryMessenger: binaryMessenger, codec: codec)
+    if let api = api {
+      setAttributesChannel.setMessageHandler { message, reply in
+        let args = message as! [Any?]
+        let attributesArg = args[0] as! [SFMCUserAttribute]
+        do {
+          try api.setAttributes(attributes: attributesArg)
+          reply(wrapResult(nil))
+        } catch {
+          reply(wrapError(error))
+        }
+      }
+    } else {
+      setAttributesChannel.setMessageHandler(nil)
+    }
+    let addTagsChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.sf_marketing_cloud_flutter.SfMarketingCloudHostApi.addTags", binaryMessenger: binaryMessenger, codec: codec)
+    if let api = api {
+      addTagsChannel.setMessageHandler { message, reply in
+        let args = message as! [Any?]
+        let tagsArg = args[0] as! [String]
+        do {
+          try api.addTags(tags: tagsArg)
+          reply(wrapResult(nil))
+        } catch {
+          reply(wrapError(error))
+        }
+      }
+    } else {
+      addTagsChannel.setMessageHandler(nil)
+    }
+    let removeTagsChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.sf_marketing_cloud_flutter.SfMarketingCloudHostApi.removeTags", binaryMessenger: binaryMessenger, codec: codec)
+    if let api = api {
+      removeTagsChannel.setMessageHandler { message, reply in
+        let args = message as! [Any?]
+        let tagsArg = args[0] as! [String]
+        do {
+          try api.removeTags(tags: tagsArg)
+          reply(wrapResult(nil))
+        } catch {
+          reply(wrapError(error))
+        }
+      }
+    } else {
+      removeTagsChannel.setMessageHandler(nil)
+    }
     let enableVerboseLoggingChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.sf_marketing_cloud_flutter.SfMarketingCloudHostApi.enableVerboseLogging", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       enableVerboseLoggingChannel.setMessageHandler { _, reply in
@@ -192,6 +391,36 @@ class SfMarketingCloudHostApiSetup {
       }
     } else {
       disableVerboseLoggingChannel.setMessageHandler(nil)
+    }
+    let trackConversionChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.sf_marketing_cloud_flutter.SfMarketingCloudHostApi.trackConversion", binaryMessenger: binaryMessenger, codec: codec)
+    if let api = api {
+      trackConversionChannel.setMessageHandler { message, reply in
+        let args = message as! [Any?]
+        let dataArg = args[0] as! SFMCConversionData
+        do {
+          try api.trackConversion(data: dataArg)
+          reply(wrapResult(nil))
+        } catch {
+          reply(wrapError(error))
+        }
+      }
+    } else {
+      trackConversionChannel.setMessageHandler(nil)
+    }
+    let trackPageViewChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.sf_marketing_cloud_flutter.SfMarketingCloudHostApi.trackPageView", binaryMessenger: binaryMessenger, codec: codec)
+    if let api = api {
+      trackPageViewChannel.setMessageHandler { message, reply in
+        let args = message as! [Any?]
+        let pathArg = args[0] as! String
+        do {
+          try api.trackPageView(path: pathArg)
+          reply(wrapResult(nil))
+        } catch {
+          reply(wrapError(error))
+        }
+      }
+    } else {
+      trackPageViewChannel.setMessageHandler(nil)
     }
   }
 }

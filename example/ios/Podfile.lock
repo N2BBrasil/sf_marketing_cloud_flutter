@@ -1,0 +1,39 @@
+PODS:
+  - Flutter (1.0.0)
+  - integration_test (0.0.1):
+    - Flutter
+  - MarketingCloud-SFMCSdk (1.0.8)
+  - MarketingCloudSDK (8.0.13):
+    - MarketingCloud-SFMCSdk (~> 1.0.8)
+  - sf_marketing_cloud_flutter (0.0.1):
+    - Flutter
+    - MarketingCloudSDK
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - integration_test (from `.symlinks/plugins/integration_test/ios`)
+  - sf_marketing_cloud_flutter (from `.symlinks/plugins/sf_marketing_cloud_flutter/ios`)
+
+SPEC REPOS:
+  trunk:
+    - MarketingCloud-SFMCSdk
+    - MarketingCloudSDK
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  integration_test:
+    :path: ".symlinks/plugins/integration_test/ios"
+  sf_marketing_cloud_flutter:
+    :path: ".symlinks/plugins/sf_marketing_cloud_flutter/ios"
+
+SPEC CHECKSUMS:
+  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  integration_test: 13825b8a9334a850581300559b8839134b124670
+  MarketingCloud-SFMCSdk: e6e0918fec9f4fdc8c6b832d8bb0a79a29baafe8
+  MarketingCloudSDK: 594417b5a838377d866ba0d6d87241756f2d6077
+  sf_marketing_cloud_flutter: 3a1d5887bf2a91369706e21b400b4046e4f41fd2
+
+PODFILE CHECKSUM: 70d9d25280d0dd177a5f637cdb0f0b0b12c6a189
+
+COCOAPODS: 1.11.3
